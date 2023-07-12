@@ -1,9 +1,7 @@
-from prompt_toolkit import prompt
 import argparse
 import configparser
 import json
 import os
-
 
 from langchain.agents import AgentType, initialize_agent
 from langchain.chat_models import ChatOpenAI
@@ -13,6 +11,7 @@ from langchain.memory import ConversationBufferMemory
 from langchain.prompts import MessagesPlaceholder
 from langchain.schema import SystemMessage
 from langchain.utilities import SerpAPIWrapper
+from prompt_toolkit import prompt
 
 from shtool import ShellTool
 
@@ -24,16 +23,19 @@ DEFAULT_CONFIG = {
     },
 }
 
+
 def load_config():
     config = configparser.ConfigParser()
     config.read_dict(DEFAULT_CONFIG)
     config.read("config.ini")
     return config
 
+
 def load_tools(config):
     return [
         ShellTool(handle_tool_error=True),
     ]
+
 
 def init_agent_with_tools(config):
     system_prompt = SystemMessage(content=config.get("settings", "system_prompt"))
@@ -52,10 +54,12 @@ def init_agent_with_tools(config):
         tools,
         chat,
         agent=AgentType.OPENAI_FUNCTIONS,
+        verbose=True,
         agent_kwargs=agent_kwargs,
         memory=memory,
     )
     return agent
+
 
 def run(agent):
     while True:
@@ -63,10 +67,12 @@ def run(agent):
         response_message = agent.run(user_input)
         print(response_message)
 
+
 def main():
     config = load_config()
     agent = init_agent_with_tools(config)
     run(agent)
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     main()
