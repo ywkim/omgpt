@@ -163,11 +163,15 @@ We appreciate all contributions, no matter how small. Thank you for your support
 
 ## Community
 
-We believe that a strong community is key to the success of OMGpt Shell. We encourage you to join our Discord server where you can ask questions, share your experiences, and connect with other OMGpt Shell users.
+One of the goals of the OMGpt project is to foster a community of users and contributors. We believe that community feedback and collaboration is key to creating a versatile and user-friendly shell.
 
-Join our Discord community [here](https://discord.gg/your-discord-invite-link).
+We strongly encourage all users of OMGpt Shell to share their usage cases and experiences. Did you use OMGpt Shell to automate a tedious task? Have you come up with an ingenious command that you'd like to share? We'd love to hear about it!
 
-Please remember to be respectful and considerate of others in the community. We look forward to seeing you there!
+Our community mainly communicates via Discord. Our server is a place for you to share your experiences, ask questions, and get help with any issues you might encounter. It's also a place where you can share your own ideas and contributions to the project.
+
+We're excited to hear about the diverse ways in which you are using OMGpt Shell, and we believe that sharing these experiences can help make OMGpt Shell even better. Join our Discord server and become part of the OMGpt Shell community!
+
+- Join our Discord server: [here](https://discord.gg/yxp9v2Nf)
 
 ## License
 
