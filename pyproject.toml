@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "omgpt"
+version = "0.1.0"
+description = ""
+authors = ["Youngwook Kim <youngwook.kim@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.8.1"
+langchain = "^0.0.230"
+
+[tool.poetry.group.dev.dependencies]
+black = "^23.7.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
