@@ -35,7 +35,7 @@ class ShellTool(BaseTool):
         print(f"$ {command}")
         try:
             completed_process = subprocess.run(command, shell=True, capture_output=True, text=True)
-            output = completed_process.stdout
+            output = completed_process.stdout + completed_process.stderr
             return output
         except OpenAIError as e:
             raise ToolException(str(e)) from e
