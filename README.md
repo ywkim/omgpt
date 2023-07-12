@@ -139,7 +139,7 @@ These optional settings customize OMGpt to better suit your needs:
 
 - `chat_model`: Specifies the chat model that OMGpt will use. This includes "gpt-4-0613" and "gpt-3.5-turbo-0613", among others. If it's not specified, a default model will be used. ou should verify the availability of these models in your API subscription.
 
-- `system_prompt`: Sets the behavior of the model used. The prompt should instruct the model about its function and how to generate responses. For instance, "You are a shell. You treat their time as precious. You are as concise as possible in responses.  Use friendly, appropriate emoticons when responding to users."
+- `system_prompt`: Sets the behavior of the model used. The prompt should instruct the model about its function and how to generate responses. For instance, "You are a shell. You treat their time as precious. You are as concise as possible in responses. You need to run the next command sequentially, depending on the result of the previous command, without prompting the user if necessary. You should run a command to get information about system. Use friendly, appropriate emoticons when responding to users."
 
 - `temperature`: Controls the diversity of the model's responses. A higher value (nearer to 1) produces more various outputs, while a lower value creates more deterministic responses.
 
