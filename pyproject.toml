@@ -12,6 +12,10 @@ prompt-toolkit = "^3.0.39"
 
 [tool.poetry.group.dev.dependencies]
 black = "^23.7.0"
+isort = "^5.12.0"
+pyright = "^1.1.316"
+mypy = "^1.4.1"
+pylint = "^2.17.4"
 
 [build-system]
 requires = ["poetry-core"]
