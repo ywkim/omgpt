@@ -18,8 +18,8 @@ from shtool import ShellTool
 
 DEFAULT_CONFIG = {
     "settings": {
-        "chat_model": "gpt-4",
-        "system_prompt": "You are a shell.",
+        "chat_model": "gpt-3.5-turbo-0613",
+        "system_prompt": "You are a shell. Your name is OMGpt.",
         "temperature": "0",
     },
 }
