@@ -1,16 +1,11 @@
 import argparse
 import configparser
-import json
-import os
 
 from langchain.agents import AgentType, initialize_agent
 from langchain.chat_models import ChatOpenAI
-from langchain.embeddings import OpenAIEmbeddings
-from langchain.llms import OpenAI
 from langchain.memory import ConversationBufferMemory
 from langchain.prompts import MessagesPlaceholder
 from langchain.schema import SystemMessage
-from langchain.utilities import SerpAPIWrapper
 from prompt_toolkit import prompt
 
 from shtool import ShellTool
@@ -31,13 +26,13 @@ def load_config():
     return config
 
 
-def load_tools(config):
+def load_tools():
     return [
         ShellTool(handle_tool_error=True),
     ]
 
 
-def init_agent_with_tools(config):
+def init_agent_with_tools(config, verbose):
     system_prompt = SystemMessage(content=config.get("settings", "system_prompt"))
     agent_kwargs = {
         "extra_prompt_messages": [MessagesPlaceholder(variable_name="memory")],
@@ -49,12 +44,12 @@ def init_agent_with_tools(config):
         temperature=float(config.get("settings", "temperature")),
         openai_api_key=config.get("api", "openai_api_key"),
     )
-    tools = load_tools(config)
+    tools = load_tools()
     agent = initialize_agent(
         tools,
         chat,
         agent=AgentType.OPENAI_FUNCTIONS,
-        verbose=True,
+        verbose=verbose,
         agent_kwargs=agent_kwargs,
         memory=memory,
     )
@@ -69,8 +64,13 @@ def run(agent):
 
 
 def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-v', '--verbose', action='store_true', help='Increase output verbosity')
+    args = parser.parse_args()
+
     config = load_config()
-    agent = init_agent_with_tools(config)
+    agent = init_agent_with_tools(config, verbose=args.verbose)
+
     run(agent)
 
 
