@@ -23,7 +23,7 @@ class ShellToolSchema(BaseModel):
 
 class ShellTool(BaseTool):
     name = "sh"
-    description = "useful when you need to run a shell command and get standard output"
+    description = "useful when you need to run a shell command and get standard output and errors"
     args_schema: Type[ShellToolSchema] = ShellToolSchema
 
     def _run(
