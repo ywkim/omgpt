@@ -6,7 +6,8 @@ from langchain.chat_models import ChatOpenAI
 from langchain.memory import ConversationBufferMemory
 from langchain.prompts import MessagesPlaceholder
 from langchain.schema import SystemMessage
-from prompt_toolkit import prompt
+from prompt_toolkit import PromptSession, prompt
+from prompt_toolkit.history import FileHistory
 
 from shtool import make_shell_tool
 
@@ -58,8 +59,11 @@ def init_agent_with_tools(config, verbose):
 
 
 def run(agent):
+    history = FileHistory(".omgpt_history")
+    session = PromptSession(history=history)
+
     while True:
-        user_input = prompt("> ")
+        user_input = session.prompt("> ")
         response_message = agent.run(user_input)
         print(response_message)
 
