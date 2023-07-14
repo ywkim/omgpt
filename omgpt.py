@@ -8,7 +8,7 @@ from langchain.prompts import MessagesPlaceholder
 from langchain.schema import SystemMessage
 from prompt_toolkit import prompt
 
-from shtool import ShellTool
+from shtool import make_shell_tool
 
 DEFAULT_CONFIG = {
     "settings": {
@@ -28,7 +28,7 @@ def load_config():
 
 def load_tools():
     return [
-        ShellTool(handle_tool_error=True),
+        make_shell_tool(),
     ]
 
 
