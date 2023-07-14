@@ -43,6 +43,7 @@ def init_agent_with_tools(config, verbose):
         model=config.get("settings", "chat_model"),
         temperature=float(config.get("settings", "temperature")),
         openai_api_key=config.get("api", "openai_api_key"),
+        request_timeout=60
     )
     tools = load_tools()
     agent = initialize_agent(
