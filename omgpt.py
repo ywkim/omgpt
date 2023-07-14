@@ -43,7 +43,7 @@ def init_agent_with_tools(config, verbose):
         model=config.get("settings", "chat_model"),
         temperature=float(config.get("settings", "temperature")),
         openai_api_key=config.get("api", "openai_api_key"),
-        request_timeout=60
+        request_timeout=60,
     )
     tools = load_tools()
     agent = initialize_agent(
@@ -66,7 +66,9 @@ def run(agent):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('-v', '--verbose', action='store_true', help='Increase output verbosity')
+    parser.add_argument(
+        "-v", "--verbose", action="store_true", help="Increase output verbosity"
+    )
     args = parser.parse_args()
 
     config = load_config()
