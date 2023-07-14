@@ -2,6 +2,7 @@ import argparse
 import configparser
 
 from langchain.agents import AgentType, initialize_agent
+from langchain.callbacks.streaming_stdout import StreamingStdOutCallbackHandler
 from langchain.chat_models import ChatOpenAI
 from langchain.memory import ConversationBufferMemory
 from langchain.prompts import MessagesPlaceholder
@@ -45,6 +46,8 @@ def init_agent_with_tools(config, verbose):
         temperature=float(config.get("settings", "temperature")),
         openai_api_key=config.get("api", "openai_api_key"),
         request_timeout=60,
+        streaming=True,
+        callbacks=[StreamingStdOutCallbackHandler()],
     )
     tools = load_tools()
     agent = initialize_agent(
@@ -65,7 +68,7 @@ def run(agent):
     while True:
         user_input = session.prompt("> ")
         response_message = agent.run(user_input)
-        print(response_message)
+        print()
 
 
 def main():
