@@ -62,7 +62,8 @@ def init_agent_with_tools(config, verbose):
 
 
 def run(agent):
-    history = FileHistory(".omgpt_history")
+    home = os.path.expanduser("~")
+    history = FileHistory(os.path.join(home, ".omgpt_history"))
     session = PromptSession(history=history)
 
     while True:
