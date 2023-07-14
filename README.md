@@ -1,20 +1,21 @@
-# OMGpt Shell
+# 🐚 OMGpt Shell
 
-![Demo](omgpt.gif)
+![🎬 Demo](omgpt.gif)
 
-## Table of Contents
-1. [Introduction](#introduction)
-2. [Features](#features)
-3. [Installation](#installation)
-4. [Usage](#usage)
-5. [Contributing](#contributing)
-6. [Community](#community)
-7. [License](#license)
-8. [Acknowledgements](#acknowledgements)
+## 📝 Table of Contents
+1. [📚 Introduction](#introduction)
+2. [⭐ Features](#features)
+3. [⚙️️ Installation](#installation)
+4. [🎯 Usage](#usage)
+5. [🔧 Configuration](#configuration)
+6. [💡 Contributing](#contributing)
+7. [👥 Community](#community)
+8. [📜 License](#license)
+9. [🙏 Acknowledgements](#acknowledgements)
 
-## Introduction
+## 📚 Introduction
 
-Welcome to **OMGpt Shell**!
+Welcome to **OMGpt Shell**! 👋
 
 OMGpt Shell is a revolutionary AI-powered command-line interface (CLI) aiming to make your interaction with your computer's shell environment as intuitive and efficient as possible.
 
@@ -22,9 +23,9 @@ While traditional shell environments like bash, zsh, and fish require specific c
 
 Think of OMGpt Shell as your personal command-line assistant. Instead of having to remember and type out specific shell commands, you can just tell OMGpt Shell what you want to do in in your preferred language. OMGpt Shell's powerful AI will interpret your command and translate it into the appropriate shell command.
 
-OMGpt Shell can greatly simplify the process of interacting with your computer's shell environment, whether you're a beginner just learning the ropes or a seasoned power user looking for a more efficient way to work. Try OMGpt Shell today and experience the future of command-line interfaces!
+OMGpt Shell can greatly simplify the process of interacting with your computer's shell environment, whether you're a beginner just learning the ropes or a seasoned power user looking for a more efficient way to work. Try OMGpt Shell today and experience the future of command-line interfaces! 🚀
 
-## Features
+## ⭐ Features
 
 OMGpt Shell is an AI-powered command line interface designed to make your interaction with the shell more intuitive and efficient. Here are some of the key features:
 
@@ -57,7 +58,7 @@ OMGpt Shell is an AI-powered command line interface designed to make your intera
 
 By transforming your natural language inputs into appropriate shell commands, OMGpt Shell makes the process of working with a shell more intuitive, efficient, and user-friendly.
 
-## Installation
+## ⚙️ Installation
 
 You need Python 3.8 or above and Poetry, a dependency management tool, to install and run OMGpt.
 
@@ -85,9 +86,9 @@ You need Python 3.8 or above and Poetry, a dependency management tool, to instal
    poetry install
    ```
 
-Now, OMGpt is ready to be used!
+Now, OMGpt is ready to be used! 🎉
 
-## Usage
+## 🎯 Usage
 
 After installation, using OMGpt Shell is simple:
 
@@ -119,7 +120,7 @@ After installation, using OMGpt Shell is simple:
 
 Remember, the goal of OMGpt Shell is to understand your commands in in your preferred language and convert them to appropriate shell commands.
 
-## Configuration
+## 🔧 Configuration
 
 To customize your user experience with OMGpt, you need to create a configuration file named `config.ini` in the root directory of your project.
 
@@ -151,7 +152,7 @@ These optional settings customize OMGpt to better suit your needs:
 
 After modifying your `config.ini`, don't forget to save it and restart OMGpt for the changes to apply. More details about the models and their behaviors can be found in the [official OpenAI API documentation](https://docs.openai.com/en/).
 
-## Contributing
+## 💡 Contributing
 
 We welcome contributions to OMGpt Shell! Whether it's reporting bugs, suggesting new features, improving documentation, or contributing code, your help is greatly appreciated.
 
@@ -165,9 +166,9 @@ Here are some ways you can contribute:
 
 4. **Contributing Code**: If you're a developer and want to contribute code to OMGpt Shell, we'd love to see your pull requests. Please make sure to follow our coding standards and guidelines.
 
-We appreciate all contributions, no matter how small. Thank you for your support!
+We appreciate all contributions, no matter how small. Thank you for your support! 👩‍💻👨‍💻
 
-## Community
+## 👥 Community
 
 One of the goals of the OMGpt project is to foster a community of users and contributors. We believe that community feedback and collaboration is key to creating a versatile and user-friendly shell.
 
@@ -179,7 +180,7 @@ We're excited to hear about the diverse ways in which you are using OMGpt Shell,
 
 - Join our Discord server: [here](https://discord.gg/yxp9v2Nf)
 
-## License
+## 📜 License
 
 OMGpt Shell is licensed under the MIT License. This means you are free to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the software, subject to the following conditions:
 
@@ -189,7 +190,7 @@ OMGpt Shell is licensed under the MIT License. This means you are free to use, c
 
 For more details, please see the [LICENSE](LICENSE) file in our GitHub repository.
 
-## Acknowledgements
+## 🙏 Acknowledgements
 
 We would like to express our deepest gratitude to the following individuals and organizations for their contributions to OMGpt Shell:
 
@@ -200,4 +201,4 @@ We would also like to thank all users of OMGpt Shell for their support and feedb
 
 Lastly, we would like to acknowledge all the open source projects that have inspired us and made this project possible. We are proud to be part of the open source community and look forward to giving back.
 
-Thank you all!
+Thank you all! 💖
