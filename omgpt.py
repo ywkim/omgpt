@@ -1,5 +1,6 @@
 import argparse
 import configparser
+import os
 
 from langchain.agents import AgentType, initialize_agent
 from langchain.callbacks.streaming_stdout import StreamingStdOutCallbackHandler
