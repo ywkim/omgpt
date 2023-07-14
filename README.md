@@ -26,13 +26,19 @@ OMGpt Shell can greatly simplify the process of interacting with your computer's
 
 ## Features
 
-OMGpt Shell comes with a wide range of features designed to enhance your shell scripting capabilities:
+OMGpt Shell is an AI-powered command line interface designed to make your interaction with the shell more intuitive and efficient. Here are some of the key features:
 
-1. **Natural Language Processing**: OMGpt Shell uses advanced Natural Language Processing (NLP) techniques to understand your commands, allowing you to interact with the shell in in your preferred language.
+1. **Natural Language Processing**: OMGpt Shell uses advanced Natural Language Processing (NLP) techniques to understand your commands. This allows you to interact with the shell in your preferred language, making it more accessible and user-friendly.
 
-2. **Wide Range of Command Support**: OMGpt Shell is designed to support a wide range of commands. From simple file operations to complex tasks like networking or system management, OMGpt Shell can translate your natural language commands into the appropriate shell commands.
+2. **Wide Range of Command Support**: From simple file operations to complex tasks like networking or system management, OMGpt Shell can translate your natural language commands into the appropriate shell commands. This reduces the need to remember specific command syntax and increases productivity.
 
-3. **Examples of use**:
+3. **Command History**: OMGpt Shell keeps track of the commands you've used, allowing you to easily revisit and reuse them. This feature enhances efficiency and allows for easy repetition of commands.
+
+4. **Directory Navigation**: Easily navigate through your file system with simple commands. OMGpt Shell understands your directory change commands, making file system navigation a breeze.
+
+5. **Streaming Responses**: Get real-time feedback from OMGpt Shell. As GPT processes your commands, the responses are streamed back to you, keeping you informed every step of the way.
+
+6. **Examples of use**:
 
    - **Example 1**: When you say, "Download the file at 'http://example.com/file' and save it as 'downloaded_file'", OMGpt Shell will execute the following:
      ```bash
