@@ -26,7 +26,16 @@ DEFAULT_CONFIG = {
 def load_config(config_file: str) -> configparser.ConfigParser:
     config = configparser.ConfigParser()
     config.read_dict(DEFAULT_CONFIG)
-    config.read(config_file)
+    if os.path.exists(config_file):
+        config.read(config_file)
+    else:
+        raise FileNotFoundError(
+            f"Configuration file '{config_file}' not found. Please create one."
+        )
+    if not config.has_section("api") or not config.has_option("api", "openai_api_key"):
+        raise ValueError(
+            "Missing required 'openai_api_key' in 'api' section in the configuration file."
+        )
     return config
 
 
