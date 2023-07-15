@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "omgpt"
-version = "0.0.5"
+version = "0.0.6"
 description = "Simplify and enhance your command-line experience with the power of AI"
 authors = ["Youngwook Kim <youngwook.kim@gmail.com>"]
 readme = "README.md"

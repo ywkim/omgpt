@@ -1,6 +1,6 @@
 import unittest
 
-from shtool import ShellTool
+from omgpt import ShellTool
 
 
 class TestShellTool(unittest.TestCase):

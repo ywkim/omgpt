@@ -12,7 +12,7 @@ from langchain.tools import Tool
 from prompt_toolkit import PromptSession, prompt
 from prompt_toolkit.history import FileHistory
 
-from shtool import ShellTool, ShellToolSchema
+from omgpt.shtool import ShellTool, ShellToolSchema
 
 DEFAULT_CONFIG = {
     "settings": {
