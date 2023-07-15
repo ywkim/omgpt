@@ -8,10 +8,11 @@ from langchain.chat_models import ChatOpenAI
 from langchain.memory import ConversationBufferMemory
 from langchain.prompts import MessagesPlaceholder
 from langchain.schema import SystemMessage
+from langchain.tools import Tool
 from prompt_toolkit import PromptSession, prompt
 from prompt_toolkit.history import FileHistory
 
-from shtool import make_shell_tool
+from shtool import ShellTool, ShellToolSchema
 
 DEFAULT_CONFIG = {
     "settings": {
@@ -29,13 +30,7 @@ def load_config():
     return config
 
 
-def load_tools():
-    return [
-        make_shell_tool(),
-    ]
-
-
-def init_agent_with_tools(config, verbose):
+def init_agent_with_tools(tools, config, verbose):
     system_prompt = SystemMessage(content=config.get("settings", "system_prompt"))
     agent_kwargs = {
         "extra_prompt_messages": [MessagesPlaceholder(variable_name="memory")],
@@ -50,7 +45,6 @@ def init_agent_with_tools(config, verbose):
         streaming=True,
         callbacks=[StreamingStdOutCallbackHandler()],
     )
-    tools = load_tools()
     agent = initialize_agent(
         tools,
         chat,
@@ -81,9 +75,21 @@ def main():
     args = parser.parse_args()
 
     config = load_config()
-    agent = init_agent_with_tools(config, verbose=args.verbose)
-
-    run(agent)
+    shell_tool = ShellTool()
+    try:
+        tools = [
+            Tool.from_function(
+                func=shell_tool,
+                name="sh",
+                description="Useful when you need to run a shell command and get standard output and errors.",
+                args_schema=ShellToolSchema,
+                handle_tool_error=True,
+            )
+        ]
+        agent = init_agent_with_tools(tools, config, verbose=args.verbose)
+        run(agent)
+    finally:
+        shell_tool.close()
 
 
 if __name__ == "__main__":

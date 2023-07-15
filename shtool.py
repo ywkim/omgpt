@@ -17,6 +17,10 @@ from langchain.tools.base import BaseTool, ToolException
 from openai.error import OpenAIError
 from pydantic import BaseModel, Field
 
+logging.basicConfig(
+    level=logging.ERROR, format="%(asctime)s - %(levelname)s - %(message)s"
+)
+
 
 class ShellToolSchema(BaseModel):
     command: str = Field(description="should be a command to run with bash")
@@ -46,18 +50,10 @@ class ShellTool:
                 output += line
             return output.strip()
         except (OpenAIError, IOError) as e:
-            self.process.stdin.close()
-            self.process.terminate()
-            self.process.wait(timeout=0.2)
+            logging.error(str(e), exc_info=True)
             raise ToolException(str(e)) from e
 
-
-def make_shell_tool():
-    shell_tool = ShellTool()
-    return Tool.from_function(
-        func=shell_tool,
-        name="sh",
-        description="Useful when you need to run a shell command and get standard output and errors.",
-        args_schema=ShellToolSchema,
-        handle_tool_error=True,
-    )
+    def close(self):
+        self.process.stdin.close()
+        self.process.terminate()
+        self.process.wait(timeout=0.2)
