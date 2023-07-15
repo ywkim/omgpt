@@ -23,10 +23,10 @@ DEFAULT_CONFIG = {
 }
 
 
-def load_config():
+def load_config(config_file: str) -> configparser.ConfigParser:
     config = configparser.ConfigParser()
     config.read_dict(DEFAULT_CONFIG)
-    config.read("config.ini")
+    config.read(config_file)
     return config
 
 
@@ -72,9 +72,15 @@ def main():
     parser.add_argument(
         "-v", "--verbose", action="store_true", help="Increase output verbosity"
     )
+    parser.add_argument(
+        "-c",
+        "--config",
+        default=os.path.expanduser("~/.omgptrc"),
+        help="Path to the config file",
+    )
     args = parser.parse_args()
 
-    config = load_config()
+    config = load_config(args.config)
     with ShellTool() as shell_tool:
         tools = [
             Tool.from_function(
