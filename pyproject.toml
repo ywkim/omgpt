@@ -9,7 +9,7 @@ license = "MIT"
 
 [tool.poetry.dependencies]
 python = "^3.8.1"
-langchain = "^0.0.230"
+langchain = "^0.0.200"
 prompt-toolkit = "^3.0.39"
 openai = "^0.27.8"
 
