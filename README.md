@@ -100,11 +100,11 @@ Remember, the goal of OMGpt Shell is to understand your commands in your preferr
 
 ## 🔧 Configuration
 
-To customize your user experience with OMGpt, you need to create a configuration file named `config.ini` in the root directory of your project.
+To customize your user experience with OMGpt, you need to create a configuration file named `~/.omgptrc` in your home directory.
 
-Here's a simple example of what your `config.ini` might look like:
+Here's a simple example of what your `~/.omgptrc` might look like:
 
-```
+```ini
 [api]
 openai_api_key = <your-openai-api-key>
 
@@ -122,13 +122,13 @@ The only required setting to run OMGpt properly is the OpenAI API Key:
 
 These optional settings customize OMGpt to better suit your needs:
 
-- `chat_model`: Specifies the chat model that OMGpt will use. This includes "gpt-4-0613" and "gpt-3.5-turbo-0613", among others. If it's not specified, a default model will be used. ou should verify the availability of these models in your API subscription.
+- `chat_model`: Specifies the chat model that OMGpt will use. This includes "gpt-4-0613" and "gpt-3.5-turbo-0613", among others. If it's not specified, a default model will be used. You should verify the availability of these models in your API subscription.
 
 - `system_prompt`: Sets the behavior of the model used. The prompt should instruct the model about its function and how to generate responses. For instance, "You are a shell. Your name is OMGpt. You treat their time as precious. You are as concise as possible in responses. You need to run the next command sequentially, depending on the result of the previous command, without prompting the user if necessary. You should run a command to get information about system. Use friendly, appropriate emoticons when responding to users."
 
 - `temperature`: Controls the diversity of the model's responses. A higher value (nearer to 1) produces more various outputs, while a lower value creates more deterministic responses.
 
-After modifying your `config.ini`, don't forget to save it and restart OMGpt for the changes to apply. More details about the models and their behaviors can be found in the [official OpenAI API documentation](https://docs.openai.com/en/).
+After modifying your `~/.omgptrc`, don't forget to save it and restart OMGpt for the changes to apply. More details about the models and their behaviors can be found in the [official OpenAI API documentation](https://docs.openai.com/en/).
 
 ## 💡 Contributing
 
