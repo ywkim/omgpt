@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "omgpt"
-version = "0.1.0"
-description = ""
+version = "0.0.1"
+description = "An AI-powered command-line interface"
 authors = ["Youngwook Kim <youngwook.kim@gmail.com>"]
 readme = "README.md"
 
@@ -20,5 +20,5 @@ pylint = "^2.17.4"
 pytest = "^7.4.0"
 
 [build-system]
-requires = ["poetry-core"]
+requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
