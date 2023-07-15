@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "omgpt"
-version = "0.0.2"
+version = "0.0.3"
 description = "An AI-powered command-line interface"
 authors = ["Youngwook Kim <youngwook.kim@gmail.com>"]
 readme = "README.md"
@@ -9,7 +9,7 @@ license = "MIT"
 
 [tool.poetry.dependencies]
 python = "^3.8.1"
-langchain = "^0.0.205"
+langchain = ">=0.0.205,<0.1.0"
 prompt-toolkit = "^3.0.39"
 openai = "^0.27.8"
 
