@@ -4,6 +4,8 @@ version = "0.0.1"
 description = "An AI-powered command-line interface"
 authors = ["Youngwook Kim <youngwook.kim@gmail.com>"]
 readme = "README.md"
+homepage = "https://github.com/ywkim/omgpt"
+license = "MIT"
 
 [tool.poetry.dependencies]
 python = "^3.8.1"
