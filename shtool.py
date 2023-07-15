@@ -57,3 +57,9 @@ class ShellTool:
         self.process.stdin.close()
         self.process.terminate()
         self.process.wait(timeout=0.2)
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        self.close()

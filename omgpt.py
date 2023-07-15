@@ -75,8 +75,7 @@ def main():
     args = parser.parse_args()
 
     config = load_config()
-    shell_tool = ShellTool()
-    try:
+    with ShellTool() as shell_tool:
         tools = [
             Tool.from_function(
                 func=shell_tool,
@@ -88,8 +87,6 @@ def main():
         ]
         agent = init_agent_with_tools(tools, config, verbose=args.verbose)
         run(agent)
-    finally:
-        shell_tool.close()
 
 
 if __name__ == "__main__":
