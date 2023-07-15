@@ -60,33 +60,11 @@ By transforming your natural language inputs into appropriate shell commands, OM
 
 ## ⚙️ Installation
 
-You need Python 3.8 or above and Poetry, a dependency management tool, to install and run OMGpt.
+You can install OMGpt Shell using pip. Make sure you have Python 3.8 or above installed.
 
-1. **Clone the repository**
-
-   First, clone the OMGpt repository:
-
-   ```shell
-   git clone https://github.com/ywkim/omgpt.git
-   ```
-
-2. **Navigate to the directory**
-
-   Change directory to the project:
-
-   ```shell
-   cd omgpt
-   ```
-
-3. **Install dependencies**
-
-   Use Poetry to install the necessary dependencies:
-
-   ```shell
-   poetry install
-   ```
-
-Now, OMGpt is ready to be used! 🎉
+```bash
+pip install omgpt
+```
 
 ## 🎯 Usage
 
@@ -97,10 +75,10 @@ After installation, using OMGpt Shell is simple:
 2. Start OMGpt Shell by running the following command:
 
    ```bash
-   poetry run python omgpt.py
+   omgpt
    ```
 
-3. You'll now be in the OMGpt Shell interface. Here, instead of typing regular shell commands, you can issue commands in in your preferred language. For example:
+3. You'll now be in the OMGpt Shell interface. Here, instead of typing regular shell commands, you can issue commands in your preferred language. For example:
 
    ```bash
    > Download the file at 'http://example.com/file' and save it as 'downloaded_file'
@@ -118,7 +96,7 @@ After installation, using OMGpt Shell is simple:
    > Check the current status of git, track and commit the newly written source code with a nice commit message
    ```
 
-Remember, the goal of OMGpt Shell is to understand your commands in in your preferred language and convert them to appropriate shell commands.
+Remember, the goal of OMGpt Shell is to understand your commands in your preferred language and convert them to appropriate shell commands.
 
 ## 🔧 Configuration
 
