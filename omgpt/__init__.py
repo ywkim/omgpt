@@ -65,7 +65,7 @@ def init_agent_with_tools(tools, config, verbose):
     return agent
 
 
-def run(agent):
+def run_interactive(agent):
     home = os.path.expanduser("~")
     history = FileHistory(os.path.join(home, ".omgpt_history"))
     session = PromptSession(history=history)
@@ -75,6 +75,10 @@ def run(agent):
         response_message = agent.run(user_input)
         print()
 
+def run_noninteractive(agent, command):
+    response_message = agent.run(command)
+    print()
+
 
 def main():
     parser = argparse.ArgumentParser()
@@ -82,7 +86,9 @@ def main():
         "-v", "--verbose", action="store_true", help="Increase output verbosity"
     )
     parser.add_argument(
-        "-c",
+        "-c", "--command", help="Run a single command in non-interactive mode"
+    )
+    parser.add_argument(
         "--config",
         default=os.path.expanduser("~/.omgptrc"),
         help="Path to the config file",
@@ -101,7 +107,11 @@ def main():
             )
         ]
         agent = init_agent_with_tools(tools, config, verbose=args.verbose)
-        run(agent)
+
+        if args.command:
+            run_noninteractive(agent, args.command)
+        else:
+            run_interactive(agent)
 
 
 if __name__ == "__main__":
