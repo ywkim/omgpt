@@ -39,7 +39,9 @@ OMGpt Shell is an AI-powered command line interface designed to make your intera
 
 5. **Streaming Responses**: Get real-time feedback from OMGpt Shell. As GPT processes your commands, the responses are streamed back to you, keeping you informed every step of the way.
 
-6. **Examples of use**:
+6. **Non-Interactive Mode**: OMGpt Shell supports a non-interactive mode, allowing you to use it in scripts or batch jobs, or to execute a single command without entering the interactive shell environment.
+
+7. **Examples of use**:
 
    - **Example 1**: When you say, "Download the file at 'http://example.com/file' and save it as 'downloaded_file'", OMGpt Shell will execute the following:
      ```bash
@@ -95,6 +97,14 @@ After installation, using OMGpt Shell is simple:
    ```bash
    > Check the current status of git, track and commit the newly written source code with a nice commit message
    ```
+
+4. To use non-interactive mode, pass your command as an argument when starting OMGpt Shell. For example:
+
+   ```bash
+   omgpt -c "Download the file at 'http://example.com/file' and save it as 'downloaded_file'"
+   ```
+
+   This will start OMGpt Shell, execute the given command, and then exit. The output will be the same as if you had entered the command in interactive mode.
 
 Remember, the goal of OMGpt Shell is to understand your commands in your preferred language and convert them to appropriate shell commands.
 
