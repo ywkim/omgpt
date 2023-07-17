@@ -1,13 +1,15 @@
 import argparse
 import configparser
 import os
+import sys
+from typing import Any, Dict, List
 
 from langchain.agents import AgentType, initialize_agent
-from langchain.callbacks.streaming_stdout import StreamingStdOutCallbackHandler
+from langchain.callbacks.base import BaseCallbackHandler
 from langchain.chat_models import ChatOpenAI
 from langchain.memory import ConversationBufferMemory
 from langchain.prompts import MessagesPlaceholder
-from langchain.schema import SystemMessage
+from langchain.schema import LLMResult, SystemMessage
 from langchain.tools import Tool
 from prompt_toolkit import PromptSession, prompt
 from prompt_toolkit.history import FileHistory
@@ -39,6 +41,25 @@ def load_config(config_file: str) -> configparser.ConfigParser:
     return config
 
 
+class StreamingHandler(BaseCallbackHandler):
+    def on_llm_start(
+        self, serialized: Dict[str, Any], prompts: List[str], **kwargs: Any
+    ) -> None:
+        """Run when LLM starts running."""
+        self.token_count = 0
+
+    def on_llm_new_token(self, token: str, **kwargs: Any) -> None:
+        """Run on new LLM token. Only available when streaming is enabled."""
+        self.token_count += len(token)
+        sys.stdout.write(token)
+        sys.stdout.flush()
+
+    def on_llm_end(self, response: LLMResult, **kwargs: Any) -> None:
+        """Run when LLM ends running."""
+        if self.token_count > 0:
+            print()
+
+
 def init_agent_with_tools(tools, config, verbose):
     system_prompt = SystemMessage(content=config.get("settings", "system_prompt"))
     agent_kwargs = {
@@ -52,7 +73,7 @@ def init_agent_with_tools(tools, config, verbose):
         openai_api_key=config.get("api", "openai_api_key"),
         request_timeout=60,
         streaming=True,
-        callbacks=[StreamingStdOutCallbackHandler()],
+        callbacks=[StreamingHandler()],
     )
     agent = initialize_agent(
         tools,
@@ -73,11 +94,10 @@ def run_interactive(agent):
     while True:
         user_input = session.prompt("> ")
         response_message = agent.run(user_input)
-        print()
+
 
 def run_noninteractive(agent, command):
     response_message = agent.run(command)
-    print()
 
 
 def main():
