@@ -121,13 +121,14 @@ def run_interactive(agent, command_history):
         user_input = session.prompt("> ")
         if user_input == FULL_OUTPUT:
             for command, output in command_history.get_last_commands():
+                print()
                 print(f"$ {command}")
                 print(output)
         elif user_input:
             # Clear command history when a new user command comes in
             command_history.clear()
             response_message = agent.run(user_input)
-
+        print()
 
 def run_noninteractive(agent, command):
     """
