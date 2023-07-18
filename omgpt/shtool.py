@@ -22,12 +22,55 @@ logging.basicConfig(
 )
 
 
+class ShellCommandHistory:
+    """
+    A class to keep the history of shell commands and their outputs.
+
+    Attributes
+    ----------
+    last_commands : List[Tuple[str, str]]
+        A list to save command and output pairs.
+    """
+
+    def __init__(self):
+        """Initializes ShellCommandHistory with an empty command list."""
+        self.last_commands = []
+
+    def add_command(self, command, output):
+        """
+        Adds a command and output pair to the command list.
+
+        Parameters
+        ----------
+        command : str
+            The shell command executed.
+        output : str
+            The output from the command.
+        """
+        self.last_commands.append((command, output))
+
+    def get_last_commands(self):
+        """
+        Returns the last commands and output pairs.
+
+        Returns
+        -------
+        list
+            A list of tuples, where each tuple contains a command and its output.
+        """
+        return self.last_commands
+
+    def clear(self):
+        """Clears the command list."""
+        self.last_commands = []
+
+
 class ShellToolSchema(BaseModel):
     command: str = Field(description="should be a command to run with bash")
 
 
 class ShellTool:
-    def __init__(self):
+    def __init__(self, command_history):
         self.process = subprocess.Popen(
             "/bin/bash",
             stdin=subprocess.PIPE,
@@ -36,6 +79,7 @@ class ShellTool:
             text=True,
         )
         self.eof_marker = "<EOF_MARKER>"
+        self.command_history = command_history
 
     def __call__(self, command: str) -> str:
         print(f"$ {command}")
@@ -48,7 +92,9 @@ class ShellTool:
                 if line.strip() == self.eof_marker:
                     break
                 output += line
-            return output.strip()
+            output = output.strip()
+            self.command_history.add_command(command, output)
+            return output
         except (OpenAIError, IOError) as e:
             logging.error(str(e), exc_info=True)
             raise ToolException(str(e)) from e

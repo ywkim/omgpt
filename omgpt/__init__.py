@@ -11,10 +11,12 @@ from langchain.memory import ConversationBufferMemory
 from langchain.prompts import MessagesPlaceholder
 from langchain.schema import LLMResult, SystemMessage
 from langchain.tools import Tool
-from prompt_toolkit import PromptSession, prompt
+from prompt_toolkit import PromptSession
 from prompt_toolkit.history import FileHistory
+from prompt_toolkit.key_binding import KeyBindings
+from prompt_toolkit.keys import Keys
 
-from omgpt.shtool import ShellTool, ShellToolSchema
+from omgpt.shtool import ShellCommandHistory, ShellTool, ShellToolSchema
 
 DEFAULT_CONFIG = {
     "settings": {
@@ -23,6 +25,9 @@ DEFAULT_CONFIG = {
         "temperature": "0",
     },
 }
+
+
+FULL_OUTPUT = "FULL_OUTPUT"
 
 
 def load_config(config_file: str) -> configparser.ConfigParser:
@@ -86,17 +91,55 @@ def init_agent_with_tools(tools, config, verbose):
     return agent
 
 
-def run_interactive(agent):
+def run_interactive(agent, command_history):
+    """
+    Runs the agent in interactive mode.
+
+    In interactive mode, commands are read one by one from the user's input.
+    If the user types 'Ctrl + F', the full output of the last commands executed in shell is printed.
+
+    Parameters
+    ----------
+    agent : Agent
+        The agent to run commands.
+    command_history : ShellCommandHistory
+        The object to keep track of the command history.
+    """
     home = os.path.expanduser("~")
     history = FileHistory(os.path.join(home, ".omgpt_history"))
-    session = PromptSession(history=history)
+
+    bindings = KeyBindings()
+
+    @bindings.add(Keys.ControlF)
+    def _(event):
+        # Exit current prompt session with special result
+        event.app.exit(result=FULL_OUTPUT)
+
+    session = PromptSession(history=history, key_bindings=bindings)
 
     while True:
         user_input = session.prompt("> ")
-        response_message = agent.run(user_input)
+        if user_input == FULL_OUTPUT:
+            for command, output in command_history.get_last_commands():
+                print(f"$ {command}")
+                print(output)
+        elif user_input:
+            # Clear command history when a new user command comes in
+            command_history.clear()
+            response_message = agent.run(user_input)
 
 
 def run_noninteractive(agent, command):
+    """
+    Runs a single command in non-interactive mode.
+
+    Parameters
+    ----------
+    agent : Agent
+        The agent to run the command.
+    command : str
+        The command to run.
+    """
     response_message = agent.run(command)
 
 
@@ -116,7 +159,9 @@ def main():
     args = parser.parse_args()
 
     config = load_config(args.config)
-    with ShellTool() as shell_tool:
+
+    command_history = ShellCommandHistory()
+    with ShellTool(command_history) as shell_tool:
         tools = [
             Tool.from_function(
                 func=shell_tool,
@@ -131,7 +176,7 @@ def main():
         if args.command:
             run_noninteractive(agent, args.command)
         else:
-            run_interactive(agent)
+            run_interactive(agent, command_history)
 
 
 if __name__ == "__main__":
