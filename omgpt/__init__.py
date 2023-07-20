@@ -95,6 +95,15 @@ def init_agent_with_tools(tools, config, verbose):
 from prompt_toolkit import PromptSession
 from prompt_toolkit.completion import Completer, Completion, PathCompleter
 
+from prompt_toolkit import PromptSession
+from prompt_toolkit.completion import Completer, Completion, PathCompleter
+from prompt_toolkit.document import Document
+import os
+
+import os
+from prompt_toolkit import PromptSession
+from prompt_toolkit.completion import Completer, Completion, PathCompleter
+
 class ShellCompleter(Completer):
     def __init__(self):
         self.path_completer = PathCompleter()
@@ -107,10 +116,18 @@ class ShellCompleter(Completer):
 
         if parts:
             # If there are parts, only autocomplete the last part
+            last_part = parts[-1]
+
+            # Expand ~ to the user's home directory
+            expanded_path = os.path.expanduser(last_part)
+
+            # If there are parts, only autocomplete the last part
             for completion in self.path_completer.get_completions(
-                document.__class__(parts[-1]), complete_event
+                document.__class__(expanded_path), complete_event
             ):
-                yield Completion(completion.text, start_position=-len(parts[-1]))
+                yield Completion(parts[-1] + completion.text, start_position=-len(parts[-1]))
+
+
 
 def run_interactive(agent, command_history):
     """
@@ -140,7 +157,8 @@ def run_interactive(agent, command_history):
         # If the user has not entered anything, exit current prompt session with special result
         event.app.exit(result=FULL_OUTPUT)
 
-    session = PromptSession(history=history, key_bindings=bindings, completer=ShellCompleter())
+    session = PromptSession(history=history, key_bindings=bindings, completer=ShellCompleter(), complete_while_typing=False)
+
 
     while True:
         user_input = session.prompt("> ")
