@@ -85,6 +85,7 @@ class ShellTool:
         print(f"$ {command}")
         try:
             self.process.stdin.write(command + "\n")
+            self.process.stdin.write('echo\n')
             self.process.stdin.write('echo "{}"\n'.format(self.eof_marker))
             self.process.stdin.flush()
             output = ""
