@@ -15,6 +15,8 @@ from prompt_toolkit import PromptSession
 from prompt_toolkit.history import FileHistory
 from prompt_toolkit.key_binding import KeyBindings
 from prompt_toolkit.keys import Keys
+from prompt_toolkit import PromptSession
+from prompt_toolkit.completion import PathCompleter
 
 from omgpt.shtool import ShellCommandHistory, ShellTool, ShellToolSchema
 
@@ -90,6 +92,25 @@ def init_agent_with_tools(tools, config, verbose):
     )
     return agent
 
+from prompt_toolkit import PromptSession
+from prompt_toolkit.completion import Completer, Completion, PathCompleter
+
+class ShellCompleter(Completer):
+    def __init__(self):
+        self.path_completer = PathCompleter()
+
+    def get_completions(self, document, complete_event):
+        text = document.text_before_cursor
+
+        # Split the input on whitespace
+        parts = text.split()
+
+        if parts:
+            # If there are parts, only autocomplete the last part
+            for completion in self.path_completer.get_completions(
+                document.__class__(parts[-1]), complete_event
+            ):
+                yield Completion(completion.text, start_position=-len(parts[-1]))
 
 def run_interactive(agent, command_history):
     """
@@ -119,7 +140,7 @@ def run_interactive(agent, command_history):
         # If the user has not entered anything, exit current prompt session with special result
         event.app.exit(result=FULL_OUTPUT)
 
-    session = PromptSession(history=history, key_bindings=bindings)
+    session = PromptSession(history=history, key_bindings=bindings, completer=ShellCompleter())
 
     while True:
         user_input = session.prompt("> ")
