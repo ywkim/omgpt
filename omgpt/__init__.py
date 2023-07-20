@@ -112,7 +112,11 @@ def run_interactive(agent, command_history):
 
     @bindings.add(Keys.ControlF)
     def _(event):
-        # Exit current prompt session with special result
+        # Check if the user has already entered something
+        if event.app.current_buffer.text:
+            # If the user has already entered something, do nothing
+            return
+        # If the user has not entered anything, exit current prompt session with special result
         event.app.exit(result=FULL_OUTPUT)
 
     session = PromptSession(history=history, key_bindings=bindings)
