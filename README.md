@@ -39,7 +39,7 @@ OMGpt Shell is an AI-powered command line interface designed to make your intera
 
 5. **Streaming Responses**: Get real-time feedback from OMGpt Shell. As GPT processes your commands, the responses are streamed back to you, keeping you informed every step of the way.
 
-6. **Full Output Feature**: If you want to see the full output of the last executed command, simply press Ctrl + F. This will show you the complete standard output or error, providing you with all the details you need.
+6. **Full Output Feature**: If you want to see the full output of the last executed command, simply press Ctrl + O. This will show you the complete standard output or error, providing you with all the details you need.
 
 7. **Non-Interactive Mode**: OMGpt Shell supports a non-interactive mode, allowing you to use it in scripts or batch jobs, or to execute a single command without entering the interactive shell environment.
 
@@ -49,7 +49,7 @@ OMGpt Shell is an AI-powered command line interface designed to make your intera
      ```bash
      wget -O downloaded_file http://example.com/file
      ```
-     If you want to see the full output of this command, press Ctrl + F.
+     If you want to see the full output of this command, press Ctrl + O.
 
    - **Example 2**: If you tell OMGpt Shell to "Find all the Python files in the current directory", it will execute:
      ```bash

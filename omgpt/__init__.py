@@ -96,7 +96,7 @@ def run_interactive(agent, command_history):
     Runs the agent in interactive mode.
 
     In interactive mode, commands are read one by one from the user's input.
-    If the user types 'Ctrl + F', the full output of the last commands executed in shell is printed.
+    If the user types 'Ctrl + O', the full output of the last commands executed in shell is printed.
 
     Parameters
     ----------
@@ -110,7 +110,7 @@ def run_interactive(agent, command_history):
 
     bindings = KeyBindings()
 
-    @bindings.add(Keys.ControlF)
+    @bindings.add(Keys.ControlO)
     def _(event):
         # Check if the user has already entered something
         if event.app.current_buffer.text:
