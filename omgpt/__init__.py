@@ -12,11 +12,11 @@ from langchain.prompts import MessagesPlaceholder
 from langchain.schema import LLMResult, SystemMessage
 from langchain.tools import Tool
 from prompt_toolkit import PromptSession
+from prompt_toolkit.completion import Completer, Completion, PathCompleter
+from prompt_toolkit.document import Document
 from prompt_toolkit.history import FileHistory
 from prompt_toolkit.key_binding import KeyBindings
 from prompt_toolkit.keys import Keys
-from prompt_toolkit import PromptSession
-from prompt_toolkit.completion import PathCompleter
 
 from omgpt.shtool import ShellCommandHistory, ShellTool, ShellToolSchema
 
@@ -92,17 +92,6 @@ def init_agent_with_tools(tools, config, verbose):
     )
     return agent
 
-from prompt_toolkit import PromptSession
-from prompt_toolkit.completion import Completer, Completion, PathCompleter
-
-from prompt_toolkit import PromptSession
-from prompt_toolkit.completion import Completer, Completion, PathCompleter
-from prompt_toolkit.document import Document
-import os
-
-import os
-from prompt_toolkit import PromptSession
-from prompt_toolkit.completion import Completer, Completion, PathCompleter
 
 class ShellCompleter(Completer):
     def __init__(self):
@@ -125,8 +114,9 @@ class ShellCompleter(Completer):
             for completion in self.path_completer.get_completions(
                 document.__class__(expanded_path), complete_event
             ):
-                yield Completion(parts[-1] + completion.text, start_position=-len(parts[-1]))
-
+                yield Completion(
+                    parts[-1] + completion.text, start_position=-len(parts[-1])
+                )
 
 
 def run_interactive(agent, command_history):
@@ -157,8 +147,12 @@ def run_interactive(agent, command_history):
         # If the user has not entered anything, exit current prompt session with special result
         event.app.exit(result=FULL_OUTPUT)
 
-    session = PromptSession(history=history, key_bindings=bindings, completer=ShellCompleter(), complete_while_typing=False)
-
+    session = PromptSession(
+        history=history,
+        key_bindings=bindings,
+        completer=ShellCompleter(),
+        complete_while_typing=False,
+    )
 
     while True:
         user_input = session.prompt("> ")
@@ -172,6 +166,7 @@ def run_interactive(agent, command_history):
             command_history.clear()
             response_message = agent.run(user_input)
         print()
+
 
 def run_noninteractive(agent, command):
     """
