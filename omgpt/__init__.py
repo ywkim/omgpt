@@ -13,7 +13,6 @@ from langchain.schema import LLMResult, SystemMessage
 from langchain.tools import Tool
 from prompt_toolkit import PromptSession
 from prompt_toolkit.completion import Completer, Completion, PathCompleter
-from prompt_toolkit.document import Document
 from prompt_toolkit.history import FileHistory
 from prompt_toolkit.key_binding import KeyBindings
 from prompt_toolkit.keys import Keys
@@ -94,6 +93,24 @@ def init_agent_with_tools(tools, config, verbose):
 
 
 class ShellCompleter(Completer):
+    """
+    A completer for shell-like command line interfaces.
+
+    This completer uses a `PathCompleter` to provide completions for file and directory paths.
+    It splits the input on whitespace and only provides completions for the last part.
+    It also expands `~` to the user's home directory.
+
+    Attributes
+    ----------
+    path_completer : PathCompleter
+        The `PathCompleter` used to provide path completions.
+
+    Methods
+    -------
+    get_completions(document, complete_event)
+        Provides completions for the last part of the input.
+    """
+
     def __init__(self):
         self.path_completer = PathCompleter()
 
