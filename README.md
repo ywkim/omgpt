@@ -41,9 +41,11 @@ OMGpt Shell is an AI-powered command line interface designed to make your intera
 
 6. **Full Output Feature**: If you want to see the full output of the last executed command, simply press Ctrl + O. This will show you the complete standard output or error, providing you with all the details you need.
 
-7. **Non-Interactive Mode**: OMGpt Shell supports a non-interactive mode, allowing you to use it in scripts or batch jobs, or to execute a single command without entering the interactive shell environment.
+7. **Auto-Completion for File and Directory Paths**: OMGpt Shell supports auto-completion for file and directory paths. As you start typing a path, OMGpt Shell will suggest possible completions, making it faster and easier to enter paths.
 
-8. **Examples of use**:
+8. **Non-Interactive Mode**: OMGpt Shell supports a non-interactive mode, allowing you to use it in scripts or batch jobs, or to execute a single command without entering the interactive shell environment.
+
+9. **Examples of use**:
 
    - **Example 1**: When you say, "Download the file at 'http://example.com/file' and save it as 'downloaded_file'", OMGpt Shell will execute the following:
      ```bash
@@ -61,6 +63,7 @@ OMGpt Shell is an AI-powered command line interface designed to make your intera
      git add .
      git commit -m "Automatically committed by OMGpt Shell"
      ```
+   - **Example 4**: If you start typing the name of a file or directory and then press Tab, OMGpt Shell will auto-complete the path for you. For example, if you have a file named 'example.txt' in the current directory, you can just type 'exa' and then press Tab to auto-complete the file name.
 
 By transforming your natural language inputs into appropriate shell commands, OMGpt Shell makes the process of working with a shell more intuitive, efficient, and user-friendly.
 
