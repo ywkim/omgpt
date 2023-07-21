@@ -1,4 +1,5 @@
 """Tool that run shell commands."""
+import asyncio
 import logging
 import subprocess
 import sys
@@ -70,29 +71,53 @@ class ShellToolSchema(BaseModel):
 
 
 class ShellTool:
+    """
+    A tool that runs shell commands asynchronously.
+
+    Attributes
+    ----------
+    command_history : ShellCommandHistory
+        A history of shell commands and their outputs.
+    """
+
     def __init__(self, command_history):
-        self.process = subprocess.Popen(
-            "/bin/bash",
-            stdin=subprocess.PIPE,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.STDOUT,
-            text=True,
-        )
+        self.process = None
         self.eof_marker = "<EOF_MARKER>"
         self.command_history = command_history
+        self.show_output = False
 
-    def __call__(self, command: str) -> str:
+    async def _create_process(self):
+        return await asyncio.create_subprocess_shell(
+            "/bin/bash",
+            stdin=asyncio.subprocess.PIPE,
+            stdout=asyncio.subprocess.PIPE,
+            stderr=asyncio.subprocess.STDOUT,
+        )
+
+    def toggle_output(self):
+        """
+        Toggles the output display of the shell command.
+
+        If the output display is currently on, it will be turned off.
+        If the output display is currently off, it will be turned on.
+        """
+        self.show_output = not self.show_output
+
+    async def __call__(self, command: str) -> str:
         print(f"$ {command}")
         try:
-            self.process.stdin.write(command + "\n")
-            self.process.stdin.write('echo\n')
-            self.process.stdin.write('echo "{}"\n'.format(self.eof_marker))
-            self.process.stdin.flush()
+            self.process.stdin.write((command + "\n").encode())
+            self.process.stdin.write(("echo\n").encode())
+            self.process.stdin.write(('echo "{}"\n'.format(self.eof_marker)).encode())
+            await self.process.stdin.drain()
             output = ""
-            for line in iter(self.process.stdout.readline, ""):
+            async for line in self.process.stdout:
+                line = line.decode()
                 if line.strip() == self.eof_marker:
                     break
                 output += line
+                if self.show_output:
+                    print(line, end="")
             output = output.strip()
             self.command_history.add_command(command, output)
             return output
@@ -100,13 +125,20 @@ class ShellTool:
             logging.error(str(e), exc_info=True)
             raise ToolException(str(e)) from e
 
-    def close(self):
+    async def close(self):
+        """
+        Closes the shell process.
+
+        This method closes the standard input of the shell process and waits for the process to exit.
+        It should be called when the ShellTool object is no longer needed.
+        """
         self.process.stdin.close()
         self.process.terminate()
-        self.process.wait(timeout=0.2)
+        await self.process.wait()
 
-    def __enter__(self):
+    async def __aenter__(self):
+        self.process = await self._create_process()
         return self
 
-    def __exit__(self, exc_type, exc_val, exc_tb):
-        self.close()
+    async def __aexit__(self, exc_type, exc_val, exc_tb):
+        await self.close()
