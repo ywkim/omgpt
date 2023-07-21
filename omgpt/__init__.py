@@ -29,6 +29,7 @@ DEFAULT_CONFIG = {
 
 
 FULL_OUTPUT = "FULL_OUTPUT"
+TOGGLE_OUTPUT = "TOGGLE_OUTPUT"
 
 
 def load_config(config_file: str) -> configparser.ConfigParser:
@@ -169,8 +170,12 @@ def run_interactive(agent, command_history, shell_tool):
 
     @bindings.add(Keys.ControlT)
     def toggle_output(event):
-        # Toggle output display
-        shell_tool.toggle_output()
+        # Check if the user has already entered something
+        if event.app.current_buffer.text:
+            # If the user has already entered something, do nothing
+            return
+        # If the user has not entered anything, toggle output display
+        event.app.exit(result=TOGGLE_OUTPUT)
 
     session = PromptSession(
         history=history,
@@ -186,6 +191,9 @@ def run_interactive(agent, command_history, shell_tool):
                 print()
                 print(f"$ {command}")
                 print(output)
+        elif user_input == TOGGLE_OUTPUT:
+            print()
+            shell_tool.toggle_output()
         elif user_input:
             # Clear command history when a new user command comes in
             command_history.clear()

@@ -1,19 +1,8 @@
 """Tool that run shell commands."""
 import logging
 import subprocess
-import sys
-from typing import Any, Optional, Type
 
-from langchain.callbacks.manager import (
-    AsyncCallbackManagerForToolRun,
-    CallbackManagerForToolRun,
-)
-from langchain.chains.question_answering import load_qa_chain
-from langchain.embeddings import OpenAIEmbeddings
-from langchain.indexes import VectorstoreIndexCreator
-from langchain.llms import OpenAI
-from langchain.tools import BaseTool, StructuredTool, Tool, tool
-from langchain.tools.base import BaseTool, ToolException
+from langchain.tools.base import ToolException
 from openai.error import OpenAIError
 from pydantic import BaseModel, Field
 
@@ -71,7 +60,7 @@ class ShellToolSchema(BaseModel):
 
 class ShellTool:
     """
-    A tool that runs shell commands asynchronously.
+    A tool that runs shell commands.
 
     Attributes
     ----------
@@ -85,7 +74,7 @@ class ShellTool:
         self.command_history = command_history
         self.show_output = False
 
-    async def _create_process(self):
+    def _create_process(self):
         return subprocess.Popen(
             "/bin/bash",
             stdin=subprocess.PIPE,
@@ -102,6 +91,7 @@ class ShellTool:
         If the output display is currently off, it will be turned on.
         """
         self.show_output = not self.show_output
+        print(f"Output is now {'ON' if self.show_output else 'OFF'}.")
 
     def __call__(self, command: str) -> str:
         print(f"$ {command}")
