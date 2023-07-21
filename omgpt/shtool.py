@@ -1,10 +1,12 @@
 """Tool that run shell commands."""
 import logging
+import re
 import subprocess
+from typing import List
 
 from langchain.tools.base import ToolException
 from openai.error import OpenAIError
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, validator
 
 logging.basicConfig(
     level=logging.ERROR, format="%(asctime)s - %(levelname)s - %(message)s"
@@ -13,12 +15,12 @@ logging.basicConfig(
 
 class ShellCommandHistory:
     """
-    A class to keep the history of shell commands and their outputs.
+    A class to manage the history of shell commands and their outputs.
 
     Attributes
     ----------
     last_commands : List[Tuple[str, str]]
-        A list to save command and output pairs.
+        A list to save the pairs of command and output.
     """
 
     def __init__(self):
@@ -55,7 +57,38 @@ class ShellCommandHistory:
 
 
 class ShellToolSchema(BaseModel):
-    command: str = Field(description="should be a command to run with bash")
+    """
+    Schema to validate shell commands.
+
+    Attributes
+    ----------
+    commands: List[str]
+        List of shell commands to be executed
+    """
+
+    commands: List[str] = Field(
+        description="should be a list of commands to run with bash"
+    )
+
+    @validator("commands")
+    def validate_command(cls, v):
+        """
+        Validates the list of commands for the shell tool.
+
+        Parameters
+        ----------
+        v: list
+            List of commands to validate
+
+        Returns
+        -------
+        list
+            Validated list of commands
+        """
+        for command in v:
+            if not re.match(r"^[a-zA-Z0-9\s\-\_\=\+\.\,\/\:\~\$\|\&\*\?\!]*$", command):
+                raise ValueError("Command contains illegal characters")
+        return v
 
 
 class ShellTool:
@@ -93,14 +126,16 @@ class ShellTool:
         self.show_output = not self.show_output
         print(f"Output is now {'ON' if self.show_output else 'OFF'}.")
 
-    def __call__(self, command: str) -> str:
-        print(f"$ {command}")
+    def __call__(self, commands: List[str]) -> str:
         try:
-            self.process.stdin.write(command + "\n")
-            self.process.stdin.write('echo\n')
+            for command in commands:
+                print(f"$ {command}")
+                self.process.stdin.write(command + "\n")
+            self.process.stdin.write("echo\n")
             self.process.stdin.write('echo "{}"\n'.format(self.eof_marker))
             self.process.stdin.flush()
             output = ""
+
             for line in iter(self.process.stdout.readline, ""):
                 if line.strip() == self.eof_marker:
                     break
@@ -108,7 +143,7 @@ class ShellTool:
                 if self.show_output:
                     print(line, end="")
             output = output.strip()
-            self.command_history.add_command(command, output)
+            self.command_history.add_command(commands, output)
             return output
         except (OpenAIError, IOError) as e:
             logging.error(str(e), exc_info=True)

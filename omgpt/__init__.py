@@ -187,9 +187,10 @@ def run_interactive(agent, command_history, shell_tool):
     while True:
         user_input = session.prompt("> ")
         if user_input == FULL_OUTPUT:
-            for command, output in command_history.get_last_commands():
+            for commands, output in command_history.get_last_commands():
                 print()
-                print(f"$ {command}")
+                for command in commands:
+                    print(f"$ {command}")
                 print(output)
         elif user_input == TOGGLE_OUTPUT:
             print()
