@@ -41,17 +41,19 @@ OMGpt Shell is an AI-powered command line interface designed to make your intera
 
 6. **Full Output Feature**: If you want to see the full output of the last executed command, simply press Ctrl + O. This will show you the complete standard output or error, providing you with all the details you need.
 
-7. **Auto-Completion for File and Directory Paths**: OMGpt Shell supports auto-completion for file and directory paths. As you start typing a path, OMGpt Shell will suggest possible completions, making it faster and easier to enter paths.
+7. **Output Toggle Feature**: By default, OMGpt Shell hides the standard output of the executed commands. However, if you want to toggle the visibility of the output for future commands, you can simply press Ctrl + T.
 
-8. **Non-Interactive Mode**: OMGpt Shell supports a non-interactive mode, allowing you to use it in scripts or batch jobs, or to execute a single command without entering the interactive shell environment.
+8. **Auto-Completion for File and Directory Paths**: OMGpt Shell supports auto-completion for file and directory paths. As you start typing a path, OMGpt Shell will suggest possible completions, making it faster and easier to enter paths.
 
-9. **Examples of use**:
+9. **Non-Interactive Mode**: OMGpt Shell supports a non-interactive mode, allowing you to use it in scripts or batch jobs, or to execute a single command without entering the interactive shell environment.
+
+10. **Examples of use**:
 
    - **Example 1**: When you say, "Download the file at 'http://example.com/file' and save it as 'downloaded_file'", OMGpt Shell will execute the following:
      ```bash
      wget -O downloaded_file http://example.com/file
      ```
-     If you want to see the full output of this command, press Ctrl + O.
+     If you want to see the full output of this command, press Ctrl + O. If you want to toggle the visibility of the output for future commands, press Ctrl + T.
 
    - **Example 2**: If you tell OMGpt Shell to "Find all the Python files in the current directory", it will execute:
      ```bash
