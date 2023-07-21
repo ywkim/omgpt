@@ -1,7 +1,5 @@
 import argparse
-import asyncio
 import configparser
-import curses
 import os
 import sys
 from typing import Any, Dict, List
@@ -138,7 +136,7 @@ class ShellCompleter(Completer):
                 )
 
 
-async def run_interactive(agent, command_history, shell_tool):
+def run_interactive(agent, command_history, shell_tool):
     """
     Runs the agent in interactive mode.
 
@@ -170,7 +168,7 @@ async def run_interactive(agent, command_history, shell_tool):
         event.app.exit(result=FULL_OUTPUT)
 
     @bindings.add(Keys.ControlT)
-    def _(event):
+    def toggle_output(event):
         # Toggle output display
         shell_tool.toggle_output()
 
@@ -182,7 +180,7 @@ async def run_interactive(agent, command_history, shell_tool):
     )
 
     while True:
-        user_input = await session.prompt_async("> ")
+        user_input = session.prompt("> ")
         if user_input == FULL_OUTPUT:
             for command, output in command_history.get_last_commands():
                 print()
@@ -191,11 +189,11 @@ async def run_interactive(agent, command_history, shell_tool):
         elif user_input:
             # Clear command history when a new user command comes in
             command_history.clear()
-            response_message = await agent.arun(user_input)
+            response_message = agent.run(user_input)
         print()
 
 
-async def run_noninteractive(agent, command):
+def run_noninteractive(agent, command):
     """
     Runs a single command in non-interactive mode.
 
@@ -206,21 +204,16 @@ async def run_noninteractive(agent, command):
     command : str
         The command to run.
     """
-    response_message = await agent.arun(command)
+    response_message = agent.run(command)
 
 
-def sync_shell_tool(command):
-    raise NotImplementedError("sh does not support sync")
-
-
-async def run(args):
+def run(args):
     config = load_config(args.config)
     command_history = ShellCommandHistory()
-    async with ShellTool(command_history) as shell_tool:
+    with ShellTool(command_history) as shell_tool:
         tools = [
             Tool.from_function(
-                func=sync_shell_tool,
-                coroutine=shell_tool,
+                func=shell_tool,
                 name="sh",
                 description="Useful when you need to run a shell command and get standard output and errors.",
                 args_schema=ShellToolSchema,
@@ -230,9 +223,9 @@ async def run(args):
         agent = init_agent_with_tools(tools, config, verbose=args.verbose)
 
         if args.command:
-            await run_noninteractive(agent, args.command)
+            run_noninteractive(agent, args.command)
         else:
-            await run_interactive(agent, command_history, shell_tool)
+            run_interactive(agent, command_history, shell_tool)
 
 
 def main():
@@ -250,7 +243,7 @@ def main():
     )
     args = parser.parse_args()
 
-    asyncio.run(run(args))
+    run(args)
 
 
 if __name__ == "__main__":

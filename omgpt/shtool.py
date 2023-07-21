@@ -1,5 +1,4 @@
 """Tool that run shell commands."""
-import asyncio
 import logging
 import subprocess
 import sys
@@ -87,11 +86,12 @@ class ShellTool:
         self.show_output = False
 
     async def _create_process(self):
-        return await asyncio.create_subprocess_shell(
+        return subprocess.Popen(
             "/bin/bash",
-            stdin=asyncio.subprocess.PIPE,
-            stdout=asyncio.subprocess.PIPE,
-            stderr=asyncio.subprocess.STDOUT,
+            stdin=subprocess.PIPE,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+            text=True,
         )
 
     def toggle_output(self):
@@ -103,16 +103,15 @@ class ShellTool:
         """
         self.show_output = not self.show_output
 
-    async def __call__(self, command: str) -> str:
+    def __call__(self, command: str) -> str:
         print(f"$ {command}")
         try:
-            self.process.stdin.write((command + "\n").encode())
-            self.process.stdin.write(("echo\n").encode())
-            self.process.stdin.write(('echo "{}"\n'.format(self.eof_marker)).encode())
-            await self.process.stdin.drain()
+            self.process.stdin.write(command + "\n")
+            self.process.stdin.write('echo\n')
+            self.process.stdin.write('echo "{}"\n'.format(self.eof_marker))
+            self.process.stdin.flush()
             output = ""
-            async for line in self.process.stdout:
-                line = line.decode()
+            for line in iter(self.process.stdout.readline, ""):
                 if line.strip() == self.eof_marker:
                     break
                 output += line
@@ -125,7 +124,7 @@ class ShellTool:
             logging.error(str(e), exc_info=True)
             raise ToolException(str(e)) from e
 
-    async def close(self):
+    def close(self):
         """
         Closes the shell process.
 
@@ -134,11 +133,11 @@ class ShellTool:
         """
         self.process.stdin.close()
         self.process.terminate()
-        await self.process.wait()
+        self.process.wait(timeout=0.2)
 
-    async def __aenter__(self):
-        self.process = await self._create_process()
+    def __enter__(self):
+        self.process = self._create_process()
         return self
 
-    async def __aexit__(self, exc_type, exc_val, exc_tb):
-        await self.close()
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        self.close()
