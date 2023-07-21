@@ -3,15 +3,15 @@
 ![🎬 Demo](omgpt.gif)
 
 ## 📝 Table of Contents
-1. [📚 Introduction](#introduction)
-2. [⭐ Features](#features)
-3. [⚙️️ Installation](#installation)
-4. [🎯 Usage](#usage)
-5. [🔧 Configuration](#configuration)
-6. [💡 Contributing](#contributing)
-7. [👥 Community](#community)
-8. [📜 License](#license)
-9. [🙏 Acknowledgements](#acknowledgements)
+1. [📚 Introduction](#-introduction)
+2. [⭐ Features](#-features)
+3. [⚙️️ Installation](#-installation)
+4. [🎯 Usage](#-usage)
+5. [🔧 Configuration](#-configuration)
+6. [💡 Contributing](#-contributing)
+7. [👥 Community](#-community)
+8. [📜 License](#-license)
+9. [🙏 Acknowledgements](#-acknowledgements)
 
 ## 📚 Introduction
 
