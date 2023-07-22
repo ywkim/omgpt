@@ -65,6 +65,7 @@ class StreamingHandler(BaseCallbackHandler):
         """Run when LLM ends running."""
         if self.token_count > 0:
             print()
+            print()
 
 
 def init_agent_with_tools(tools, config, verbose):
@@ -97,14 +98,16 @@ class ShellCompleter(Completer):
     """
     A completer for shell-like command line interfaces.
 
-    This completer uses a `PathCompleter` to provide completions for file and directory paths.
-    It splits the input on whitespace and only provides completions for the last part.
-    It also expands `~` to the user's home directory.
+    This completer uses a `PathCompleter` to provide completions for file and
+    directory paths. It expands `~` to the user's home directory and uses the
+    current working directory of the subprocess to provide path completions.
 
     Attributes
     ----------
     path_completer : PathCompleter
         The `PathCompleter` used to provide path completions.
+    shell_tool : ShellTool
+        The `ShellTool` used to get the current working directory of the subprocess.
 
     Methods
     -------
@@ -112,8 +115,9 @@ class ShellCompleter(Completer):
         Provides completions for the last part of the input.
     """
 
-    def __init__(self):
+    def __init__(self, shell_tool):
         self.path_completer = PathCompleter()
+        self.shell_tool = shell_tool
 
     def get_completions(self, document, complete_event):
         text = document.text_before_cursor
@@ -125,10 +129,13 @@ class ShellCompleter(Completer):
             # If there are parts, only autocomplete the last part
             last_part = parts[-1]
 
-            # Expand ~ to the user's home directory
-            expanded_path = os.path.expanduser(last_part)
+            # Check if the path is absolute or starts with "~"
+            if os.path.isabs(last_part) or last_part.startswith("~"):
+                expanded_path = os.path.expanduser(last_part)
+            else:
+                working_directory = self.shell_tool.get_working_directory()
+                expanded_path = os.path.join(working_directory, last_part)
 
-            # If there are parts, only autocomplete the last part
             for completion in self.path_completer.get_completions(
                 document.__class__(expanded_path), complete_event
             ):
@@ -180,7 +187,7 @@ def run_interactive(agent, command_history, shell_tool):
     session = PromptSession(
         history=history,
         key_bindings=bindings,
-        completer=ShellCompleter(),
+        completer=ShellCompleter(shell_tool),
         complete_while_typing=False,
     )
 
@@ -188,18 +195,17 @@ def run_interactive(agent, command_history, shell_tool):
         user_input = session.prompt("> ")
         if user_input == FULL_OUTPUT:
             for commands, output in command_history.get_last_commands():
-                print()
                 for command in commands:
                     print(f"$ {command}")
                 print(output)
+                print()
         elif user_input == TOGGLE_OUTPUT:
-            print()
             shell_tool.toggle_output()
+            print()
         elif user_input:
             # Clear command history when a new user command comes in
             command_history.clear()
             response_message = agent.run(user_input)
-        print()
 
 
 def run_noninteractive(agent, command):

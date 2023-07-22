@@ -75,26 +75,6 @@ class ShellToolSchema(BaseModel):
         description="List of commands to run in a bash shell session"
     )
 
-    @validator("commands")
-    def validate_command(cls, v):
-        """
-        Validates the list of commands for the shell tool.
-
-        Parameters
-        ----------
-        v: list
-            List of commands to validate
-
-        Returns
-        -------
-        list
-            Validated list of commands
-        """
-        for command in v:
-            if not re.match(r"^[a-zA-Z0-9\s\-\_\=\+\.\,\/\:\~\$\|\&\*\?\!]*$", command):
-                raise ValueError("Command contains illegal characters")
-        return v
-
 
 class ShellTool(BaseTool):
     """Tool to run shell commands."""
@@ -135,6 +115,30 @@ class ShellTool(BaseTool):
         """
         self.show_output = not self.show_output
         print(f"Output is now {'ON' if self.show_output else 'OFF'}.")
+
+    def get_working_directory(self) -> str:
+        """
+        Returns the current working directory of the subprocess.
+
+        This method executes the `pwd` command in the subprocess and then captures and
+        returns the output, which is the current working directory.
+
+        Returns
+        -------
+        str
+            The current working directory of the subprocess.
+        """
+        command = "pwd"
+        self.process.stdin.write(command + "\n")
+        self.process.stdin.write("echo\n")
+        self.process.stdin.write('echo "{}"\n'.format(self.eof_marker))
+        self.process.stdin.flush()
+        output = ""
+        for line in iter(self.process.stdout.readline, ""):
+            if line.strip() == self.eof_marker:
+                break
+            output += line
+        return output.strip()
 
     def _run(
         self,
