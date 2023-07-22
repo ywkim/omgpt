@@ -17,7 +17,7 @@ from prompt_toolkit.history import FileHistory
 from prompt_toolkit.key_binding import KeyBindings
 from prompt_toolkit.keys import Keys
 
-from omgpt.shtool import ShellCommandHistory, ShellTool, ShellToolSchema
+from omgpt.shtool import ShellCommandHistory, ShellTool
 
 DEFAULT_CONFIG = {
     "settings": {
@@ -219,16 +219,10 @@ def run_noninteractive(agent, command):
 def run(args):
     config = load_config(args.config)
     command_history = ShellCommandHistory()
-    with ShellTool(command_history) as shell_tool:
-        tools = [
-            Tool.from_function(
-                func=shell_tool,
-                name="sh",
-                description="Useful when you need to run a shell command and get standard output and errors.",
-                args_schema=ShellToolSchema,
-                handle_tool_error=True,
-            )
-        ]
+    with ShellTool(
+        command_history=command_history, handle_tool_error=True
+    ) as shell_tool:
+        tools = [shell_tool]
         agent = init_agent_with_tools(tools, config, verbose=args.verbose)
 
         if args.command:
