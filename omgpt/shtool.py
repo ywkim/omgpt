@@ -148,7 +148,7 @@ class ShellTool(BaseTool):
         try:
             for command in commands:
                 print(f"$ {command}")
-                self.process.stdin.write(command + "\n")
+                self.process.stdin.write(command + " < /dev/null\n")
             self.process.stdin.write("echo\n")
             self.process.stdin.write('echo "{}"\n'.format(self.eof_marker))
             self.process.stdin.flush()
@@ -162,7 +162,7 @@ class ShellTool(BaseTool):
                     print(line, end="")
             output = output.strip()
             self.command_history.add_command(commands, output)
-            return output
+            return output[: (4096 // 4)]
         except (OpenAIError, IOError) as e:
             logging.error(str(e), exc_info=True)
             raise ToolException(str(e)) from e
